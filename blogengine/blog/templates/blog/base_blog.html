@@ -1,1 +1,16 @@
 {% extends 'base.html' %}
+
+{% block admin-panel %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="false">
+                Create
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'post_create_url' %}">Post</a>
+                <a class="dropdown-item" href="{% url 'tag_create_url' %}">Tag</a>
+            </div>
+        </div>
+    <a href="/admin" class="btn btn-outline-dark">Admin</a>
+    <a href="{{ admin_obj.get_update_url }}" class="btn btn-outline-dark edit" style="{%if is_detail %}display: block;{% endif %}">Edit</a>
+    <a href="{{ admin_obj.get_delete_url }}" class="btn btn-danger delete" style="{%if is_detail %}display: block;{% endif %}">Delete</a>
+{% endblock %}

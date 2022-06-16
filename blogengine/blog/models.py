@@ -23,6 +23,12 @@ class Post(models.Model):
         """ reverse is generate link"""
         return reverse('post_detail_url', kwargs={'slug': self.slug})
 
+    def get_update_url(self):
+        return reverse('post_update_url', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+        return reverse('post_delete_url', kwargs={'slug': self.slug})
+
     def save(self, *args, **kwargs):
         """Переопределяем метод save для генерации слага при сохранении нового объекта.
          Если у экземпляра модели ещё не заполнен self.slug, то его новый слаг будет результатом работы функции slug_generation
@@ -41,6 +47,12 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug': self.slug})
+
+    def get_update_url(self):
+        return reverse('tag_update_url', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+        return reverse('tag_delete_url', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

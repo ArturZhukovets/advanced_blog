@@ -2,8 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import View
 from .models import Post, Tag
-from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin
+from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from .forms import TagForm, PostForm
+
+from django.contrib.auth.mixins import LoginRequiredMixin  # Для того чтобы неавторизованный пользователь не видел вьюхи с редактированием постов
+# Ставиться в первичное наследование
 
 
 def posts_list(request):
@@ -21,25 +24,26 @@ class PostDetail(ObjectDetailMixin, View):
     template = 'blog/post_detail.html'
 
 
-class PostCreate(ObjectCreateMixin, View):
+class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
+    """LoginRequiredMixin имеет несколько атрибутов. Можно перенаправлять на url для регистрации пользователя,
+    можно написать сообщение об отказе в разрешении"""
     form_model = PostForm
     template = 'blog/post_create.html'
+    # login_url = '/admin'
+    raise_exception = True   # output a 404 error message
 
 
-class PostUpdate(ObjectUpdateMixin, View):
+
+class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Post
     form_model = PostForm
     template = 'blog/post_update_form.html.'
 
 
-# class PostUpdate(View):
-#     def get(self, request, slug):
-#         tag = Tag.objects.get(slug__iexact=slug)  # get the object from bd
-#         bound_form = TagForm(instance=tag)  # in bound_form fill out the form from tag obj
-#         return render(request, 'blog/tag_update_form.html', context={
-#             'form': bound_form,
-#             'tag': tag
-#         })
+class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
+    model = Post
+    template = 'blog/post_delete.html'
+    redirect_url = 'posts_list_url'
 
 
 class TagDetail(ObjectDetailMixin, View):
@@ -47,15 +51,21 @@ class TagDetail(ObjectDetailMixin, View):
     template = 'blog/tag_detail.html'
 
 
-class TagCreate(ObjectCreateMixin, View):
+class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     form_model = TagForm
     template = 'blog/tag_create.html'
 
 
-class TagUpdate(ObjectUpdateMixin, View):
+class TagUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Tag
     form_model = TagForm
     template = 'blog/tag_update_form.html'
+
+
+class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
+    model = Tag
+    template = 'blog/tag_delete.html'
+    redirect_url = 'tags_list_url'
 
 
 
