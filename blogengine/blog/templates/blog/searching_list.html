@@ -1,0 +1,17 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %} Posts {% endblock %}
+
+
+{% block content %}
+    <h1 class="mb-5">Posts:</h1>
+        {% if  is_find %}
+
+        {% for post in page_obj %}
+        {% include 'blog/includes/post_card_template.html'%}
+        {% endfor %}
+
+        {% else %}
+        <h3>Nothing found for your search query</h3>
+        {% endif %}
+{% endblock %}
