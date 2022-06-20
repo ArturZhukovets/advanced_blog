@@ -2,19 +2,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>{% block title%} {% endblock %}</title>
+    {% block css %}
     <link href="{% static 'css/style.css'%}" rel="stylesheet">
-    {% block css_s %} {% endblock %}
-    <title>
-        {% block title %} {% endblock%}
-    </title>
+    {% endblock %}
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">HOME</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -49,44 +48,10 @@
         </nav>
     </nav>
 
-    <div class="container mt-5">
-            <div class="row">
-                <div class="col-6 offset-md-2">
-                    {% block content %}
+    {% block content %}
 
-                    {% endblock %}
-                                            <!--     PAGINATION VIEW          -->
-                    {% if is_paginated %}
-                    <nav aria-label="">
-                        <ul class="pagination">
-                            <li class="page-item {% if not prev_url %} disabled {%endif%}">
-                                <a class="page-link" href="{{ prev_url }}">Previous</a>
-                            </li>
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if page_obj.number == i %}
-                                    <li class="page-item active" aria-current="page">
-                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                                    </li>
-                                {% elif i > page_obj.number|add:-3 and i < page_obj.number|add:3 %}
-                                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-                                {% endif %}
-                            {% endfor %}
 
-                            <li class="page-item {% if not next_url %} disabled {% endif %}">
-                                <a class="page-link" href="{{ next_url }}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    {% endif %}
-                    </div>
-            </div>
-    </div>
-            {% if request.user.is_authenticated and request.user.is_staff %}
-            <div class="admin-panel align-items-center">
 
-                {% block admin-panel %}
-                {% endblock %}
-            </div>
-            {% endif %}
+    {% endblock %}
 </body>
 </html>

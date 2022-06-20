@@ -6,4 +6,6 @@ urlpatterns = [
     path('', redirect_to_blog),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
+    path('dictionary/', include('dictionary_app.urls')),
+
 ]

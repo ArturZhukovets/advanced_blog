@@ -1,0 +1,28 @@
+{% extends 'dictionary_app/base.html' %}
+{% load static %}
+
+{% block title%} New word form {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'dictionary_app/css/new_word.css' %}">
+{% endblock %}
+{% block content %}
+
+<h2>Редактирование слова {{ model_obj.word }} </h2>
+<p>Отредактируйте необходимые поля и нажмите кнопку "Редактировать" </p>
+    <form class="addword" method="post" >
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-style {% if field.errors %} errors {% endif %}">
+                {{ field.label_tag}}
+                {{ field.errors }}
+                {{ field }}
+        </div>
+
+
+    {% endfor %}
+    <button type="submit">Редактировать</button><br><br>
+        <div class="attencion" >{{error}}</div>
+    </form>
+
+
+{% endblock %}

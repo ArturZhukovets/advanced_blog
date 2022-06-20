@@ -1,0 +1,48 @@
+{% extends 'dictionary_app/base.html' %}
+{% load static %}
+{% block title%}DICTIONARY{% endblock %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'dictionary_app/css/index.css' %}">
+    {% endblock %}
+    {% block content %}
+    <div style="overflow-x: auto;">
+        <table width="100%">
+<!--            <caption align="top" >Dictionary</caption>-->
+            <tr>
+                <th>Word</th>
+                <th>Translation</th>
+                <th>Transcription</th>
+                <th>Context</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        {% for word in words %}
+                <tr>
+                    <td>{{ word.word|capfirst }}</td>
+                    <td>{{ word.translate|capfirst }}</td>
+                {% if not word.transcription %}
+                    <td>---</td>
+                {% else %}
+                    <td>{{ word.transcription|capfirst }}</td>
+                {% endif %}
+
+                {% if not word.context %}
+                    <td>---</td>
+                {% else %}
+                    <td>{{ word.context|capfirst }}</td>
+                {% endif %}
+                    <td><a href="{% url 'update' word.id %}"><button>Edit word</button></a></td>
+                    <td><a href="{% url 'update' word.id %}"><button>Delete word</button></a></td>
+                </tr>
+
+   {% endfor %}
+    </table>
+    </div><br><br>
+    <div>
+        <a href="{% url 'new-word' %}">
+            <button type="submit">Добавить новое слово</button>
+        </a>
+        <button class="right-request">Запросить перевод у google</button>
+    </div>
+
+{% endblock %}

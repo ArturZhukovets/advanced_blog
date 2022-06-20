@@ -1,0 +1,29 @@
+{% extends 'dictionary_app/base.html' %}
+{% load static %}
+
+{% block title%} New word form {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'dictionary_app/css/new_word.css' %}">
+{% endblock %}
+{% block content %}
+
+<h2>Добавьте своё слово в словарь!</h2>
+<p>Для того, чтобы добавить своё слово, необходимо
+    заполнить поля и нажать кнопку отправить</p>
+    <form class="addword" method="post" >
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-style {% if field.errors %} errors {% endif %}">
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {{ field }}
+        </div>
+
+
+    {% endfor %}
+    <button type="submit">Отправить</button><br><br>
+        <div class="attencion" >{{error}}</div>
+    </form>
+
+
+{% endblock %}
